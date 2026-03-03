@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nidhi Quiz</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg,#ff4d6d,#845ec2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background: white;
+    width: 90%;
+    max-width: 700px;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+}
+
+h2 {
+    margin-top: 0;
+}
+
+.option {
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.option:hover {
+    background: #ffe0e6;
+}
+
+button {
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: none;
+    background: #ff4d6d;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#popup {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2 id="question"></h2>
+    <div id="options"></div>
+    <div id="textSection" style="display:none;">
+        <input id="a1" placeholder="Answer 1"><br><br>
+        <input id="a2" placeholder="Answer 2"><br><br>
+        <input id="a3" placeholder="Answer 3">
+    </div>
+    <button onclick="next()">Next</button>
+</div>
+
+<div id="popup">
+    <div class="popup-content">
+        <h2>YES ✅</h2>
+        <p>Now you have to say yes to everything I say Nidhi.</p>
+    </div>
+</div>
+
+<script>
+let step = 0;
+let selected = "";
+
+const questions = [
+{
+q: "Where did we first meet?",
+options: [
+["A","Scape Victoria"],
+["B","Scape La Trobe"],
+["C","My bed"],
+["D","In my dreams (I had déjà vu long time back)"]
+],
+correct: "D"
+},
+{
+q: "What is my biggest red flag?",
+options: [
+["A","I lie"],
+["B","I lie because I lie"],
+["C","I lie because I like to lie"],
+["D","I lie because I don’t want to lie but it just happens"]
+],
+correct: "A"
+},
+{
+q: "What do I bring to the table?",
+options: [
+["A","Love"],
+["B","Lust"],
+["C","Myself"],
+["D","A broke friend"]
+],
+correct: "D"
+},
+{
+q: "What’s my biggest talent?",
+options: [
+["A","To love you"],
+["B","To lie"],
+["C","I’m smart in everything yet dyslexic"],
+["D","All of the above"]
+],
+correct: "D"
+},
+{
+q: "What is my love language?",
+options: [
+["A","To hit you"],
+["B","To touch you"],
+["C","To get silent"],
+["D","All of them because why not"]
+],
+correct: "D"
+},
+{
+q: "Why do you not love me?",
+options: [
+["A","Because you just can’t"],
+["B","Because you don’t want to"],
+["C","Because I’m not good enough"],
+["D","Because if you love me then you won’t love anyone else ever"]
+],
+correct: "D"
+}
+];
+
+function loadQuestion() {
+    if(step < questions.length){
+        document.getElementById("textSection").style.display="none";
+        const q = questions[step];
+        document.getElementById("question").innerText = q.q;
+        const optionsDiv = document.getElementById("options");
+        optionsDiv.innerHTML = "";
+        q.options.forEach(opt => {
+            const div = document.createElement("div");
+            div.className="option";
+            div.innerText = opt[0] + ". " + opt[1];
+            div.onclick = function(){ selected = opt[0]; }
+            optionsDiv.appendChild(div);
+        });
+    } else {
+        document.getElementById("question").innerText="Final questions 😭";
+        document.getElementById("options").innerHTML="";
+        document.getElementById("textSection").style.display="block";
+    }
+}
+
+function next(){
+    if(step < questions.length){
+        if(selected !== questions[step].correct){
+            alert("Wrong 😌 Try again.");
+            return;
+        }
+        selected="";
+        step++;
+        loadQuestion();
+    } else {
+        const a1 = document.getElementById("a1").value.toUpperCase();
+        const a2 = document.getElementById("a2").value.toUpperCase();
+        const a3 = document.getElementById("a3").value.toUpperCase();
+        if(a1==="Y" && a2==="3" && a3==="S"){
+            document.getElementById("popup").style.display="flex";
+        } else {
+            alert("Use the hints exactly 😌");
+        }
+    }
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>
